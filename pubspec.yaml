@@ -10,12 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  # MongoDB direct connection (native: Windows / Android / iOS)
   mongo_dart: ^0.10.6
-  # SQLite fallback cho web (mongo_dart không hỗ trợ web)
-  sqflite: ^2.3.2
-  path: ^1.9.0
-  path_provider: ^2.1.2
   image_picker: ^1.1.2
   uuid: ^4.3.3
   shared_preferences: ^2.2.3
