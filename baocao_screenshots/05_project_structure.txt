@@ -1,0 +1,13 @@
+﻿D:\Projects\product_admin_app\lib\models
+D:\Projects\product_admin_app\lib\screens
+D:\Projects\product_admin_app\lib\services
+D:\Projects\product_admin_app\lib\widgets
+D:\Projects\product_admin_app\lib\main.dart
+D:\Projects\product_admin_app\lib\models\san_pham.dart
+D:\Projects\product_admin_app\lib\screens\add_product_screen.dart
+D:\Projects\product_admin_app\lib\screens\edit_product_screen.dart
+D:\Projects\product_admin_app\lib\screens\login_screen.dart
+D:\Projects\product_admin_app\lib\screens\product_list_screen.dart
+D:\Projects\product_admin_app\lib\services\auth_service.dart
+D:\Projects\product_admin_app\lib\services\database_service.dart
+

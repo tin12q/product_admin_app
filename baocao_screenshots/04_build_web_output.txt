@@ -1,0 +1,6 @@
+﻿flutter build web --debug
+Downloading Web SDK...
+Compiling lib\main.dart for the Web...
+Wasm dry run succeeded.
+Compiling lib\main.dart for the Web... 44.7s
+Built build\web  (SUCCESS)

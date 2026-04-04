@@ -1,0 +1,11 @@
+🚀 API Server chạy tại http://localhost:3000
+📋 Endpoints:
+   GET    /api/sanpham        — Lấy danh sách
+   GET    /api/sanpham/:id    — Lấy 1 sản phẩm
+   POST   /api/sanpham        — Thêm mới
+   PUT    /api/sanpham/:id    — Cập nhật
+   DELETE /api/sanpham/:id    — Xóa
+   GET    /api/health         — Kiểm tra trạng thái
+✅ Kết nối MongoDB thành công: mongodb://localhost:27017/product_admin_db
+✅ Đã thêm dữ liệu mẫu (3 sản phẩm)
+➕ Thêm sản phẩm: Tai nghe Sony WH-1000XM5

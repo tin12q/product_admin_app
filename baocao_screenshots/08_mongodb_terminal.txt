@@ -1,0 +1,34 @@
+=== MONGODB 8.2.6 - ĐANG CHẠY (04/04/2026) ===
+
+Cài đặt qua winget:
+> winget install MongoDB.Server
+Found MongoDB [MongoDB.Server] Version 8.2.6
+Successfully installed
+
+Khởi động MongoDB:
+> mongod --dbpath C:\data\db --logpath C:\data\mongod.log
+✅ mongod đang chạy tại TCP 127.0.0.1:27017 LISTENING
+
+=== NODE.JS BACKEND API (Express + Mongoose) ===
+
+> cd D:\Projects\product_admin_app\backend
+> node server.js
+🚀 API Server chạy tại http://localhost:3000
+   GET    /api/sanpham        — Lấy danh sách
+   POST   /api/sanpham        — Thêm mới
+   PUT    /api/sanpham/:id    — Cập nhật
+   DELETE /api/sanpham/:id    — Xóa
+   GET    /api/health         — Kiểm tra trạng thái
+✅ Kết nối MongoDB thành công: mongodb://localhost:27017/product_admin_db
+✅ Đã thêm dữ liệu mẫu (3 sản phẩm)
+
+=== HEALTH CHECK: GET /api/health ===
+{"status":"ok","mongodb":"connected","time":"2026-04-04T08:29:12.120Z"}
+
+=== PRODUCTS: GET /api/sanpham ===
+{"success":true,"data":[
+  {"idsanpham":"SP001","tensp":"Áo thun nam","loaisp":"Quần áo","gia":150000,"hinhanh":null},
+  {"idsanpham":"SP002","tensp":"Điện thoại Samsung A54","loaisp":"Điện tử","gia":8990000,"hinhanh":null},
+  {"idsanpham":"SP003","tensp":"Giày thể thao Nike","loaisp":"Giày dép","gia":1200000,"hinhanh":null},
+  {"idsanpham":"AC920AE5","tensp":"Tai nghe Sony WH-1000XM5","loaisp":"Điện tử","gia":8500000,"hinhanh":null}
+]}
