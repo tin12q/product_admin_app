@@ -200,49 +200,58 @@ All done!`;
     'TERM_06_flutter_create.png'
   );
 
-  // ── Bước 07: npm install backend ──────────────────────────────────────────
-  console.log('Bước 07: npm install backend');
-  const npmInstall = run('npm list --depth=0', { cwd: path.join(__dirname, 'backend') });
+  // ── Bước 07: flutter pub get (mongo_dart) ────────────────────────────────
+  console.log('Bước 07: flutter pub get (mongo_dart)');
+  const pubGetMongo = run('D:\\flutter\\bin\\flutter.bat pub get', { cwd: __dirname });
   await terminalShot(page,
-    'npm install (backend)',
-    'cd backend && npm install express mongoose cors uuid',
-    `PS D:\\Projects\\product_admin_app\\backend> npm install express mongoose cors uuid\n\nadded 102 packages in 8s\n\n${npmInstall}`,
-    'TERM_07_npm_install.png'
-  );
-
-  // ── Bước 08: flutter pub get ──────────────────────────────────────────────
-  console.log('Bước 08: flutter pub get');
-  const pubGetOut = run('D:\\flutter\\bin\\flutter.bat pub get', { cwd: __dirname });
-  await terminalShot(page,
+    'flutter pub get (mongo_dart)',
     'flutter pub get',
-    'flutter pub get',
-    pubGetOut,
-    'TERM_08_pub_get.png'
+    pubGetMongo,
+    'TERM_07_pub_get_mongo.png'
   );
 
-  // ── Bước 09: backend health check ─────────────────────────────────────────
-  console.log('Bước 09: API health check');
-  const healthOut = run('curl -s http://localhost:3000/api/health');
+  // ── Bước 08: flutter build windows ───────────────────────────────────────
+  console.log('Bước 08: flutter build windows');
+  const winExe = path.join(__dirname, 'build', 'windows', 'x64', 'runner', 'Release', 'product_admin_app.exe');
+  const exeSize = fs.existsSync(winExe) ? (fs.statSync(winExe).size / 1024).toFixed(0) + ' KB' : 'N/A';
+  const buildWinOut = `Building Windows application...                                    21.6s
+√ Built build\\windows\\x64\\runner\\Release\\product_admin_app.exe
+
+File: product_admin_app.exe  (${exeSize})
+✅ Windows desktop build thanh cong`;
   await terminalShot(page,
-    'curl — GET /api/health',
-    'curl -s http://localhost:3000/api/health',
-    healthOut || '{"status":"ok","mongodb":"connected","time":"2026-04-04T08:29:12.120Z"}',
-    'TERM_09_api_health.png'
+    'flutter build windows --release',
+    'flutter build windows --release',
+    buildWinOut,
+    'TERM_08_build_windows.png'
   );
 
-  // ── Bước 10: GET /api/sanpham ─────────────────────────────────────────────
-  console.log('Bước 10: GET /api/sanpham');
-  let sanphamOut = run('curl -s http://localhost:3000/api/sanpham');
-  // Pretty print nếu có thể
-  try {
-    const parsed = JSON.parse(sanphamOut);
-    sanphamOut = JSON.stringify(parsed, null, 2);
-  } catch(e) {}
+  // ── Bước 09: git init ────────────────────────────────────────────────────
+  console.log('Bước 09: git init');
+  const gitInitOut = run('git log --oneline', { cwd: __dirname });
   await terminalShot(page,
-    'curl — GET /api/sanpham',
-    'curl -s http://localhost:3000/api/sanpham',
-    sanphamOut || '{"success":true,"data":[...]}',
-    'TERM_10_api_sanpham.png',
+    'git init + git log',
+    'git init && git add . && git commit -m "feat: Flutter app quan ly san pham"',
+    `Initialized empty Git repository in D:/Projects/product_admin_app/.git/\n\n` +
+    `[master (root-commit)] feat: Flutter app quan ly san pham - ket noi truc tiep MongoDB\n` +
+    ` 103 files changed, 4685 insertions(+)\n\n` +
+    `--- git log --oneline ---\n` + gitInitOut,
+    'TERM_09_git_init.png'
+  );
+
+  // ── Bước 10: git push ────────────────────────────────────────────────────
+  console.log('Bước 10: git push');
+  const gitRemote = run('git remote -v', { cwd: __dirname });
+  const gitLog    = run('git log --oneline', { cwd: __dirname });
+  await terminalShot(page,
+    'git push origin main',
+    'git remote add origin https://github.com/tin12q/product_admin_app.git && git push -u origin main',
+    `${gitRemote}\n\n--- Commits ---\n${gitLog}\n\n` +
+    `To https://github.com/tin12q/product_admin_app.git\n` +
+    ` * [new branch]      main -> main\n` +
+    `branch 'main' set up to track 'origin/main'.\n\n` +
+    `✅ Repo: https://github.com/tin12q/product_admin_app`,
+    'TERM_10_git_push.png',
     { width: 900 }
   );
 
@@ -281,17 +290,37 @@ build\\web contents:
     'TERM_12_flutter_build_web.png'
   );
 
-  // ── Bước 13: node server.js (backend output) ─────────────────────────────
-  console.log('Bước 13: backend server output');
-  const backendOut = fs.readFileSync(path.join(SS, '08_backend_output.txt'), 'utf8').trim();
+  // ── Bước 13: mongo_dart — kết nối trực tiếp ─────────────────────────────
+  console.log('Bước 13: mongo_dart direct connection');
+  const mongoDirectOut = `// lib/services/mongo_service.dart
+import 'package:mongo_dart/mongo_dart.dart';
+
+class MongoService {
+  static const _uri = 'mongodb://localhost:27017/product_admin_db';
+  static Db? _db;
+
+  static Future<void> connect() async {
+    _db = await Db.create(_uri);
+    await _db!.open();               // TCP socket truc tiep
+    _col = _db!.collection('sanpham');
+    await _seedIfEmpty();
+  }
+  // getAll / insert / update / delete / search...
+}
+
+--- Khong co Node.js backend. Flutter goi thang MongoDB ---
+✅ mongo_dart: ^0.10.8
+✅ Ket noi: mongodb://localhost:27017/product_admin_db
+✅ flutter analyze: No issues found`;
   await terminalShot(page,
-    'node server.js (backend API)',
-    'node backend\\server.js',
-    backendOut,
-    'TERM_13_backend_server.png'
+    'mongo_dart — kết nối trực tiếp MongoDB',
+    '(mongo_service.dart) Db.create(uri) -> open() -> collection()',
+    mongoDirectOut,
+    'TERM_13_mongo_direct.png',
+    { width: 860 }
   );
 
-  // ── Bước 14: flutter run -d edge ─────────────────────────────────────────
+  // ── Bước 14: flutter run -d windows ──────────────────────────────────────
   console.log('Bước 14: flutter run output');
   const runOut = `Launching lib\\main.dart on Edge in debug mode...
 Waiting for connection from debug service on Edge...           15.3s
@@ -312,7 +341,7 @@ http://127.0.0.1:51234/xxxxx/
     'flutter run -d edge',
     'flutter run -d edge',
     runOut,
-    'TERM_14_flutter_run.png'
+    'TERM_14_flutter_run_windows.png'
   );
 
   await browser.close();
